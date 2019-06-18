@@ -1,18 +1,17 @@
 pipeline {
-  agent none
-  stages {
-    stage('Buld') {
-      agent {
-        docker{
-          image 'python:2-alpine'
+    agent none
+    stages {
+        stage('Build') {
+            agent {
+                docker {
+                    image 'python:2-alpine'
+                }
+            }
+            steps {
+                sh 'python ./sources/calc.py'
+            }
         }
-      }
-      steps{
-      sh 'python ./sources/calc.py' 
-      }
-    }
-  }
-                stage('Test') { 
+        stage('Test') { 
             agent {
                 docker {
                     image 'qnib/pytest' 
@@ -26,5 +25,6 @@ pipeline {
                     junit 'test-reports/results.xml' 
                 }
             }
+        }
+    }
 }
-
